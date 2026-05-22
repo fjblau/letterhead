@@ -38,10 +38,13 @@ export default function LetterheadCard({
 
   const location = [city, country].filter(Boolean).join(", ");
 
-  const cardLink = slug ? `/archive?search=${encodeURIComponent(slug)}` : "/archive";
+  const cardLink = slug ? `/archive/${slug}` : "/archive";
 
   return (
-    <div className="group bg-[#FCFBF9] border border-[#E3DAC9] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full relative p-4 before:absolute before:inset-[3px] before:border before:border-[#F3ECE0] before:pointer-events-none">
+    <Link
+      href={cardLink}
+      className="group bg-[#FCFBF9] border border-[#E3DAC9] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full relative p-4 before:absolute before:inset-[3px] before:border before:border-[#F3ECE0] before:pointer-events-none"
+    >
       <div className="bg-[#FAF8F5] border border-[#EAE3D5] p-3 aspect-[4/5] flex items-center justify-center overflow-hidden shadow-inner relative mb-4">
         {thumb_url ? (
           <img
@@ -110,6 +113,6 @@ export default function LetterheadCard({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
