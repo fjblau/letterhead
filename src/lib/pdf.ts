@@ -14,6 +14,10 @@ if (typeof globalThis.DOMRect === "undefined") {
 export async function processPdf(pdfBuffer: Buffer): Promise<{ pageCount: number; thumbBuffer: Buffer; width: number; height: number }> {
   const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
   
+  // Force tracing of the worker file so Next.js/Vercel bundles it
+  // @ts-ignore
+  await import("pdfjs-dist/legacy/build/pdf.worker.mjs");
+
   pdfjs.GlobalWorkerOptions.workerSrc = path.join(process.cwd(), "node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs");
 
   const uint8Array = new Uint8Array(pdfBuffer);
