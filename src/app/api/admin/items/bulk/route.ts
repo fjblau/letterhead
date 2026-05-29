@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
 
         try {
           let fileBuffer: Buffer;
-          if (item.pdf_url.startsWith("https://mock-blob") || process.env.MOCK_STORAGE === "true") {
+          if (item.pdf_url.startsWith("https://mock-blob") || item.pdf_url.startsWith("/mock-blob") || process.env.MOCK_STORAGE === "true") {
             fileBuffer = minPdfBuffer;
           } else {
             const res = await fetch(item.pdf_url);
