@@ -1,8 +1,13 @@
 import { put, del, list } from "@vercel/blob";
+import * as fs from "fs";
+import * as path from "path";
 
 export async function uploadBlob(pathname: string, body: any, contentType?: string): Promise<string> {
   if (process.env.MOCK_STORAGE === "true" || !process.env.BLOB_READ_WRITE_TOKEN) {
-    return `https://mock-blob.vercel-storage.com/${pathname}`;
+    const localPath = path.join(process.cwd(), "public", "mock-blob", pathname);
+    fs.mkdirSync(path.dirname(localPath), { recursive: true });
+    fs.writeFileSync(localPath, body);
+    return `/mock-blob/${pathname}`;
   }
   const options: any = {
     access: "public",
@@ -17,6 +22,10 @@ export async function uploadBlob(pathname: string, body: any, contentType?: stri
 
 export async function deleteFolder(prefix: string): Promise<void> {
   if (process.env.MOCK_STORAGE === "true" || !process.env.BLOB_READ_WRITE_TOKEN) {
+    const localDirPath = path.join(process.cwd(), "public", "mock-blob", prefix);
+    if (fs.existsSync(localDirPath)) {
+      fs.rmSync(localDirPath, { recursive: true, force: true });
+    }
     return;
   }
   let hasMore = true;
