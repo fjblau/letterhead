@@ -1,5 +1,15 @@
-import { createCanvas } from "@napi-rs/canvas";
+import { createCanvas, DOMMatrix, DOMPoint, DOMRect } from "@napi-rs/canvas";
 import * as path from "path";
+
+if (typeof globalThis.DOMMatrix === "undefined") {
+  globalThis.DOMMatrix = DOMMatrix as any;
+}
+if (typeof globalThis.DOMPoint === "undefined") {
+  globalThis.DOMPoint = DOMPoint as any;
+}
+if (typeof globalThis.DOMRect === "undefined") {
+  globalThis.DOMRect = DOMRect as any;
+}
 
 export async function processPdf(pdfBuffer: Buffer): Promise<{ pageCount: number; thumbBuffer: Buffer; width: number; height: number }> {
   const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
